@@ -1,14 +1,39 @@
 #色を使用できるようにする
 export LANG=ja_JP.UTF-8
 
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=$HOME/.my-zsh
 ZSH_THEME="robbyrussell"
-source $ZSH/oh-my-zsh.sh
+source $ZSH/my-zsh.sh
 
-# test
-export GEM_HOME=/Users/uu120891/Dev/myCapybara/vendor/bundle/ruby/2.4.0/gems
-export RUBYLIB=/Users/uu120891/Dev/myCapybara/vendor/bundle/ruby/2.4.0/gems
-export PATH=$PATH:/Users/uu120891/Dev/myCapybara/vendor/bundle/ruby/2.4.0/bin
+# Go
+if [ -e $HOME/.goenv ];then
+  export GOPATH=$HOME/go
+  PATH=$PATH:$GOPATH/bin
+  export GOENV_ROOT=$HOME/.goenv
+  export PATH=$PATH:$GOENV_ROOT/bin
+  eval "$(goenv init -)"
+fi
+
+# Ruby
+
+if [ -e $HOME/.rbenv ];then
+  export PATH=$PATH:$HOME/.rbenv/bin
+  eval "$(rbenv init -)"
+fi
+
+# Python
+if [ -e $HOME/.pyenv ];then
+  export PYENV_ROOT=$HOME/.pyenv
+  PATH=$PATH:$PYENV_ROOT/bin
+  if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+  fi
+fi
+
+# MeCab
+if [ -e $HOME/Dev/install ];then
+  export PATH=$PATH:$HOME/Dev/install/bin
+fi
 
 autoload -Uz colors
 colors
@@ -90,7 +115,8 @@ SAVEHIST=100
 ################
 alias l='ls -FG'
 alias ls='ls -FG'
-alias la='ls -a'
+alias gls='ls -FG'
+alias la='ls -a]'
 alias ll='ls -laFh'
 alias rm='rm -i'
 alias cp='cp -i'
@@ -105,3 +131,28 @@ alias ....='cd ../../../'
 
 alias vi='vim'
 alias cc11='cc -std=c99'
+
+# proxy_name=proxy.cc.seikei.ac.jp:8080
+# export http_proxy=$proxy_name
+# export https_proxy=$proxy_name
+# export ftp_proxy=$proxy_name
+
+
+function command_not_found_handler(){
+  if [ -e ~/.my-zsh/lib/.imgcat ];then
+    if [ -e ~/.my-zsh/img/eromanga-sensei.jpg ];then
+      source ~/.my-zsh/lib/.imgcat ~/.my-zsh/img/eromanga-sensei.jpg
+      echo -e "\e[30m\e[46m   $1   \e[m なんて恥ずかしい名前のコマンド知らないっ"
+    fi
+  fi
+}
+
+
+cat << "EOF"
+    __  __     ____                                       __         ____            __              _
+   / / / /__  / / /___     ____ ___  __  __   ____  _____/ /_       / __ \___       / /             | |____________
+  / /_/ / _ \/ / / __ \   / __ `__ \/ / / /  /_  / / ___/ __ \     / / / / __ \    / /_____ _____   / /_  /_  /_  /
+ / __  /  __/ / / /_/ /  / / / / / / /_/ /    / /_(__  ) / / /    / /_/ / /_/ /  / /_____//_____/  / / / /_/ /_/ /_
+/_/ /_/\___/_/_/\____/  /_/ /_/ /_/\__, /    /___/____/_/ /_/     \____/\____(_)/ /   ______      /_/ /___/___/___/
+                                  /____/                                        |_|  /_____/     /_/                
+EOF
